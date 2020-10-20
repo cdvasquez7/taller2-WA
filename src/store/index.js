@@ -29,11 +29,12 @@ const actions = {
       commit("SET_DEPARTMENTS", departments);
     });
   },
-  createDepartment: function(payload) { 
-    console.log(payload.nombre);
-    console.log(ref.add(payload));
+  createDepartment: function( _ , payload) { 
     return ref.add(payload)
   },
+  updateDepartment: function( _ , {id, payload}) {     
+    return ref.doc(id).set(payload)
+  },  
 }
 
 // mutations
@@ -42,7 +43,6 @@ const mutations = {
     state.departments = payload
   },
 }
-
 
 export default new Vuex.Store({
   state,

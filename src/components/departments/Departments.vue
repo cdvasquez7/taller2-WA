@@ -1,14 +1,9 @@
 <template>
-	<div>
+	<div class="main">
+        
+        <h1 class="mt-2 mb-2">Departamentos</h1>
 
-        <v-btn :to="{
-            name: 'departmentCreate',
-            }"
-            class="ma-2" color="teal accent-4" dark>
-            Crear Departamento
-        </v-btn>
-
-		<v-card>
+		<v-card class="mt-4 pa-5">
 			<v-card-title>
 				<v-text-field
 					v-model="search"
@@ -19,8 +14,7 @@
 				></v-text-field>
 			</v-card-title>
 			<v-data-table :headers="headers" :items="departments" :search="search">
-				<template v-slot:item.acciones="{ item }">
-			
+				<template v-slot:item.acciones="{ item }">			
 					<v-btn :to="{
                         name: 'departmentUpdate',
                         params: { ID: item.id }
@@ -35,6 +29,15 @@
 				</template>
 			</v-data-table>
 		</v-card>
+        <div class="mt-4">
+            <v-btn :to="{
+            name: 'departmentCreate',
+            }"
+            class="mt-2 mb-2 " color="primary" dark>
+            Crear Departamento
+            </v-btn>
+        </div>
+        
 
 		<!-- 
       <div v-for="(department, k) in departments"
@@ -68,4 +71,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.main{
+    margin: 3em;
+}
+</style>

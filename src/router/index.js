@@ -2,8 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import DepartmentCreate from '../components/departments/DepartmentCreate.vue'
+import DepartmentUpdate from '../components/departments/DepartmentUpdate.vue'
 import Departments from '../components/departments/Departments.vue'
-
 
 Vue.use(VueRouter)
 
@@ -53,7 +53,7 @@ const routes = [
     {
         path: '/department/update/:ID',
         name: 'departmentUpdate',
-        component: DepartmentCreate,
+        component: DepartmentUpdate,
         //meta: { requiresAuth: true }
     },
   ]
