@@ -39,14 +39,20 @@ const routes = [
         //meta: { requiresAuth: true }
     },    
     {
-        path: '/department/:ID',
+        path: '/department/detail/:ID',
         name: 'departmentDetail',
         // component: Course,
         meta: { requiresAuth: true }
     },
     {
-        path: '/department',
+        path: '/department/create',
         name: 'departmentCreate',
+        component: DepartmentCreate,
+        //meta: { requiresAuth: true }
+    },
+    {
+        path: '/department/update/:ID',
+        name: 'departmentUpdate',
         component: DepartmentCreate,
         //meta: { requiresAuth: true }
     },

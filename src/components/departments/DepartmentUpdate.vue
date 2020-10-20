@@ -25,9 +25,9 @@
 					<v-btn :disabled="!valid" class="mr-4" @click="submit">
 						submit
 					</v-btn>
-					<!-- <v-btn @click="clear">
+					<v-btn @click="clear">
 						clear
-					</v-btn> -->
+					</v-btn>
 				</v-col>
 			</v-row>
 		</v-container>
@@ -46,23 +46,13 @@ export default {
 		direccion: "",
 		estado: true,
 		items: ["Prueba"],
-        valid: true,
-        
+		valid: true
 	}),
 	methods: {
 		submit() {
-            var department = {
-                nombre: this.nombre,
-                coordinador: this.coordinador,
-                numeroUsuarios: this.numeroUsuarios,
-                direccion: this.direccion,
-                estado: this.nombestadore,
-            }
-            this.$store.dispatch('createDepartment', department)
-            .then(() => this.router.push("departments"))
-            .catch(() => alert("Error al agregar el departamento")) 
+
         },
-        // clear() {},
+        clear() {},
         // state:{
         //     favorites:[]
         // },

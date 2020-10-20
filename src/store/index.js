@@ -5,14 +5,7 @@ import Vuex from 'vuex'
 //import db from '../plugins/firebase'
 import firebase from '../plugins/firebase'
 
-console.log("Cristian");
-let ref =  firebase.firestore().collection("departments")
-
-
-
-console.log(ref);
-
-
+let ref =  firebase.firestore().collection("departments");
 Vue.use(Vuex)
 
 const state = {
@@ -30,11 +23,16 @@ const actions = {
       var departments = [];      
       query.forEach(doc => {
         var dep = doc.data();
-        dep.key = doc.id;
+        dep.id = doc.id;
         departments.push(dep);
       });
       commit("SET_DEPARTMENTS", departments);
     });
+  },
+  createDepartment: function(payload) { 
+    console.log(payload.nombre);
+    console.log(ref.add(payload));
+    return ref.add(payload)
   },
 }
 
