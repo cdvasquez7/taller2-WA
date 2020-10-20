@@ -14,7 +14,7 @@
 				></v-text-field>
 			</v-card-title>
 			<v-data-table :headers="headers" :items="departments" :search="search">
-				<template v-slot:item.acciones="{ item }">			
+				<template class="" v-slot:item.acciones="{ item }">			
 					<v-btn :to="{
                         name: 'departmentUpdate',
                         params: { ID: item.id }
@@ -23,7 +23,7 @@
 						Actualizar
 					</v-btn>
 
-					<v-btn class="ma-2" color="red" dark>
+					<v-btn @click="modalDeleteDepartament(item)" class="ma-2" color="red" dark>
 						Eliminar
 					</v-btn>
 				</template>
@@ -38,12 +38,36 @@
             </v-btn>
         </div>
         
+    <v-dialog
+      v-model="stateDeleteDepartament"
+      persistent
+      max-width="290"
+    >
+       <v-card>
+        <v-card-title v-if="objectDepartament" class="headline">
+          ¿Desea eliminar el departamento {{objectDepartament.nombre}}?
+        </v-card-title>
+        <v-card-text>Si se elimina, no se podra recuperar</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="cancelDeleteDepartment"
+          >
+            Cancelar
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteDepartment"
+          >
+            Eliminar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-		<!-- 
-      <div v-for="(department, k) in departments"
-            :key="k">
-            {{department.nombre}}
-      </div> -->
 	</div>
 </template>
 
@@ -58,11 +82,32 @@ export default {
 				{ text: "Número de usuarios", value: "numeroUsuarios" },
 				{ text: "Dirección", value: "direccion" },
 				{ text: "Estado", value: "estado" },
-				{ text: "Acciones", value: "acciones" }
-			]
+				{ text: "Acciones", value: "acciones" , align: 'center',}
+            ],
+            stateDeleteDepartament: false,
+            objectDepartament: undefined,
 		};
 	},
+    methods:{
+        modalDeleteDepartament: function(department){
+           this.stateDeleteDepartament = true;
+           this.objectDepartament = department;
+        },
+        cancelDeleteDepartment: function(){ 
+           this.stateDeleteDepartament = false;
+           this.objectDepartament = undefined;       
+        }, 
+        deleteDepartment: function(){          
+            this.$store
+            .dispatch("deleteDepartment", this.objectDepartament.id)
+            .then(() => this.cancelDeleteDepartment())
+            .catch(e => {
+                alert("Error al actualizar el departamento");
+            console.log(e);
+            });
 
+        }
+    },
 	computed: {
 		departments() {
 			return this.$store.getters["departments"];

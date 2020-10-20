@@ -32,9 +32,12 @@ const actions = {
   createDepartment: function( _ , payload) { 
     return ref.add(payload)
   },
-  updateDepartment: function( _ , {id, payload}) {     
+  updateDepartment: function( _ , {id, payload}) {    
     return ref.doc(id).set(payload)
-  },  
+  },
+  deleteDepartment: function( _ , id) {    
+    return ref.doc(id).delete()
+  },      
 }
 
 // mutations

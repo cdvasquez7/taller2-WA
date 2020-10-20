@@ -85,7 +85,7 @@ export default {
 			};
 
 			this.$store
-				.dispatch("updateDepartment", {id:this.id, department})
+				.dispatch("updateDepartment", {id:this.id, payload:department})
 				.then(() => this.$router.push("/departments"))
 				.catch(e => {
 					alert("Error al actualizar el departamento");

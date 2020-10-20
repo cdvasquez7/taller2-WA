@@ -61,8 +61,6 @@ export default {
                 estado: this.estado,
             }
 
-            console.log(department);
-
             this.$store.dispatch('createDepartment', department)
             .then(() => this.$router.push("/departments"))
             .catch(e => {
