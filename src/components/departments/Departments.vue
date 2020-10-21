@@ -110,7 +110,7 @@ export default {
     },
 	computed: {
 		departments() {
-			return this.$store.getters["departments"];
+			return Object.values(this.$store.getters["departments"]);
 		}
 	}
 };

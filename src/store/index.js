@@ -5,45 +5,79 @@ import Vuex from 'vuex'
 //import db from '../plugins/firebase'
 import firebase from '../plugins/firebase'
 
-let ref =  firebase.firestore().collection("departments");
+let fDepartment =  firebase.firestore().collection("departments");
+let fUsers =  firebase.firestore().collection("users");
+
 Vue.use(Vuex)
 
 const state = {
-  departments:[],
-  getters
+  departments:{},
+  users:{},
 };
+
 const getters = {
-  departments: state => state.departments  
+  departments: state => state.departments,
+  users: state => state.users,   
 };
 
 // actions
 const actions = {
   load: function({ commit }) {
-    ref.onSnapshot(query => {
-      var departments = [];      
+    
+    fDepartment.onSnapshot(query => {
+      var departments = {};      
       query.forEach(doc => {
         var dep = doc.data();
         dep.id = doc.id;
-        departments.push(dep);
+        departments[dep.id] = dep;
       });
       commit("SET_DEPARTMENTS", departments);
     });
+
+    fUsers.onSnapshot(query => {
+      var users = {};      
+      query.forEach(doc => {
+        var usr = doc.data();
+        usr.id = doc.id;
+        users[usr.id] = usr;
+      });
+      commit("SET_USERS", users);
+    });
   },
   createDepartment: function( _ , payload) { 
-    return ref.add(payload)
+    return fDepartment.add(payload)
   },
   updateDepartment: function( _ , {id, payload}) {    
-    return ref.doc(id).set(payload)
+    return fDepartment.doc(id).set(payload)
   },
   deleteDepartment: function( _ , id) {    
-    return ref.doc(id).delete()
-  },      
+    return fDepartment.doc(id).delete()
+  },   
+  createUser: function( _ , payload) { 
+    return sha256(payload.password).then(e => {
+      payload.password = e;
+      return fUsers.add(payload)
+    })
+    
+  },
+  updateUser: function( _ , {id, payload}) { 
+    return sha256(payload.password).then(e => {
+      payload.password = e;
+      return fUsers.doc(id).set(payload)
+    })   
+  },
+  deleteUser: function( _ , id) {    
+    return fUsers.doc(id).delete()
+  },     
 }
 
 // mutations
 const mutations = {
   SET_DEPARTMENTS: (state, payload) => {
     state.departments = payload
+  },
+  SET_USERS: (state, payload) => {
+    state.users = payload
   },
 }
 
@@ -53,3 +87,29 @@ export default new Vuex.Store({
   getters,
   actions,
 })
+
+function sha256(str) {
+  // We transform the string into an arraybuffer.
+  var buffer = new TextEncoder("utf-8").encode(str);
+  return crypto.subtle.digest("SHA-256", buffer).then(function (hash) {
+    return hex(hash);
+  });
+}
+
+function hex(buffer) {
+  var hexCodes = [];
+  var view = new DataView(buffer);
+  for (var i = 0; i < view.byteLength; i += 4) {
+    // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
+    var value = view.getUint32(i)
+    // toString(16) will give the hex representation of the number without padding
+    var stringValue = value.toString(16)
+    // We use concatenation and slice for padding
+    var padding = '00000000'
+    var paddedValue = (padding + stringValue).slice(-padding.length)
+    hexCodes.push(paddedValue);
+  }
+
+  // Join all the hex strings into one
+  return hexCodes.join("");
+}

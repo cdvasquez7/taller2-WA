@@ -4,6 +4,9 @@ import VueRouter from 'vue-router'
 import DepartmentCreate from '../components/departments/DepartmentCreate.vue'
 import DepartmentUpdate from '../components/departments/DepartmentUpdate.vue'
 import Departments from '../components/departments/Departments.vue'
+import Users from '../components/users/Users.vue'
+import UserUpdate from '../components/users/UserUpdate.vue'
+import UserCreate from '../components/users/UserCreate.vue'
 
 Vue.use(VueRouter)
 
@@ -17,21 +20,27 @@ const routes = [
     {
         path: '/users',
         name: 'users',
-        //  component: Users,
-        meta: { requiresAuth: true }
+        component: Users,
+        //meta: { requiresAuth: true }
     },    
     {
-        path: '/user/:ID',
+        path: '/user/detail/:ID',
         name: 'userDetail',
-        //  component: Course,
-        meta: { requiresAuth: true }
+        //component: UserDetail,
+        //meta: { requiresAuth: true }
     },
     {
-        path: '/user',
+        path: '/user/create',
         name: 'userCreate',
-        //  component: Course,
-        meta: { requiresAuth: true }
+        component: UserCreate,
+        //meta: { requiresAuth: true }
     },
+    {
+        path: '/user/update/:ID',
+        name: 'userUpdate',
+        component: UserUpdate,
+        //meta: { requiresAuth: true }
+    },   
     {
         path: '/departments',
         name: 'departments',

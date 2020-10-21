@@ -62,7 +62,7 @@ export default {
 	}),
 	computed: {
 		department: function() {
-			return this.$store.getters["departments"][this.id];
+			return this.$store.getters["departments"].find(e => e.id === this.id);
 		}
 	},
 	watch: {
