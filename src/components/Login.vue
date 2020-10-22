@@ -8,9 +8,9 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" sm="6" md="6">
-                            <v-text-field v-model="email" prepend-icon="mdi-email" label="Correo" type="email"></v-text-field>
+                            <v-text-field v-model="email" requiered :rules="emailRules" prepend-icon="mdi-email" label="Correo" type="email"></v-text-field>
                             <v-text-field v-model="password" prepend-icon="mdi-form-textbox-password" label="Contraseña" type="password"></v-text-field>
-                            <v-btn color="primary" class="mr-4" @click="submit">
+                            <v-btn color="primary" class="mr-4" @click="submit" :disabled="!valid" >
                                 Iniciar
                             </v-btn>
                             <!-- <v-btn @click="clear">
@@ -30,7 +30,11 @@ export default {
     data: () => ({
 		email: "",
         password: "",
-        valid: true,       
+        valid: true, 
+        emailRules: [
+            (email) => !!email || "E-mail is required",
+            (email) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email) || "E-mail invalido"
+        ],      
     }),
     methods: {
 		submit() {

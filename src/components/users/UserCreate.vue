@@ -10,7 +10,7 @@
                         <v-col cols="12" sm="6" md="6">
                             <v-text-field v-model="nombre" prepend-icon="mdi-label" label="Nombres"></v-text-field>
                             <v-text-field v-model="apellidos" prepend-icon="mdi-label" label="Apellidos"></v-text-field>
-                            <v-text-field v-model="email" prepend-icon="mdi-email" label="Correo" type="email"></v-text-field>
+                            <v-text-field v-model="email" requiered :rules="emailRules" prepend-icon="mdi-email" label="Correo" type="email"></v-text-field>
                             <v-text-field v-model="password" prepend-icon="mdi-form-textbox-password" label="Contraseña" type="password"></v-text-field>
                             <v-text-field v-model="vencimiento" prepend-icon="mdi-calendar-range" label="Fecha vencimiento" type="date"></v-text-field>
                             <v-select
@@ -52,7 +52,11 @@ export default {
         vencimiento: "",
         departamento: "",        
 		estado: true,
-        valid: true,       
+        valid: true,   
+        emailRules: [
+            (email) => !!email || "E-mail is required",
+            (email) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email) || "E-mail invalido"
+        ],          
     }),
     computed: {
 		departments: function() {

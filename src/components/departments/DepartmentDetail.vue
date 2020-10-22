@@ -66,30 +66,16 @@ export default {
             id: ""
 		};
 	},
-    methods:{
-        modalDeleteUser: function(user){
-           this.stateDeleteUser = true;
-           this.objectUser = user;
-        },
-        cancelDeleteUser: function(){ 
-           this.stateDeleteUser = false;
-           this.objectUser = undefined;       
-        }, 
-        deleteUser: function(){          
-            this.$store
-            .dispatch("deleteUser", this.objectUser.id)
-            .then(() => this.cancelDeleteUser())
-            .catch(e => {
-                alert("Error al actualizar el Usuario");
-            console.log(e);
-            });
-
-        },
-    },
 	computed: {
 		users() {
             var users = this.$store.getters["users"];
-			return Object.values( this.department.users ).map(e => users[e]);
+            console.log("Crisian");
+            console.log(this.department.users);
+            if (this.department.users){
+                return Object.values( this.department.users ).map(e => users[e]);
+            }
+            return [];
+			
         },
         department: function() {
             return this.$store.getters["departments"][this.id];
