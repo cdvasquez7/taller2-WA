@@ -84,9 +84,10 @@ export default {
 			headers: [
 				{ text: "Nombres", value: "nombre" },
 				{ text: "Apellidos", value: "apellidos" },
-				{ text: "Correo", value: "email" },
+        { text: "Correo", value: "email" },
+        { text: "Departamento", value: "ndepartamento" },
 				{ text: "Fecha", value: "vencimiento" },
-				{ text: "Estado", value: "estado" },
+				{ text: "Estado", value: "nestado" },
 				{ text: "Acciones", value: "acciones" , align: 'center',}
             ],
             stateDeleteUser: false,
@@ -112,20 +113,18 @@ export default {
             });
 
         },
-        // date(date) {
-        //   var options = {
-        //     weekday: 'long',
-        //     year: 'numeric',
-        //     month: 'long',
-        //     day: 'numeric'
-        //   }
-        //   return date.toLocaleDateString('es-CO', options)
-        // },
     },
 	computed: {
 		users() {
-			return Object.values(this.$store.getters["users"]);
-		}
+			return Object.values(this.$store.getters["users"]).map(usr => {
+        if (this.departments[usr.departamento]) usr.ndepartamento = this.departments[usr.departamento].nombre;
+        usr.nestado = usr.estado?"Activo":"Inactivo";
+        return usr;
+      });
+    },
+    departments(){
+      return this.$store.getters["departments"];
+    }
 	}
 };
 </script>

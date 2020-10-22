@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import DepartmentCreate from '../components/departments/DepartmentCreate.vue'
 import DepartmentUpdate from '../components/departments/DepartmentUpdate.vue'
+import DepartmentDetail from '../components/departments/DepartmentDetail.vue'
 import Departments from '../components/departments/Departments.vue'
 import Users from '../components/users/Users.vue'
 import UserUpdate from '../components/users/UserUpdate.vue'
@@ -50,8 +51,8 @@ const routes = [
     {
         path: '/department/detail/:ID',
         name: 'departmentDetail',
-        // component: Course,
-        meta: { requiresAuth: true }
+        component: DepartmentDetail,
+        //meta: { requiresAuth: true }
     },
     {
         path: '/department/create',

@@ -15,7 +15,15 @@
 			</v-card-title>
 			<v-data-table :headers="headers" :items="departments" :search="search">
 				<template class="" v-slot:item.acciones="{ item }">			
-					<v-btn :to="{
+                    <v-btn :to="{
+                        name: 'departmentDetail',
+                        params: { ID: item.id }
+                      }"
+                      class="ma-2" color="green" dark>
+						Ver
+					</v-btn>
+                    
+                    <v-btn :to="{
                         name: 'departmentUpdate',
                         params: { ID: item.id }
                       }"

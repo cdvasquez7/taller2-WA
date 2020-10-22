@@ -13,10 +13,15 @@
                             <v-text-field v-model="password" prepend-icon="mdi-form-textbox-password" label="Contraseña" type="password"></v-text-field>
                             <v-text-field v-model="vencimiento" prepend-icon="mdi-calendar-range" label="Fecha vencimiento" type="date"></v-text-field>
                             <v-select
-                            :items="items"
+                            v-model="departamento"
+                            :items="departments"
                             label="departamento"
+                            item-text="nombre"
+                            item-value="id"
                             prepend-icon="mdi-family-tree"                            
-                            ></v-select>
+                            >
+
+                            </v-select>
                             <v-switch
                             v-model="estado"
                             :label="`Departamento activo: ${estado.toString()}`"
@@ -39,6 +44,15 @@
 export default {
 	created() {
 		this.id = this.$route.params.ID;
+		if (this.user) {
+			this.nombre = this.user.nombre;
+			this.apellidos = this.user.apellidos;
+			this.email = this.user.email;
+			this.password = this.user.password;
+			this.vencimiento = this.user.vencimiento;
+			this.departamento = this.user.departamento;    
+			this.estado = this.user.estado;
+		}
 	},
 	data: () => ({
 		nombre: "",
@@ -53,12 +67,15 @@ export default {
 		id: ""
 	}),
 	computed: {
-		department: function() {
+		user: function() {
 			return this.$store.getters["users"][this.id];
-		}
+		},
+		departments: function() {
+			return Object.values(this.$store.getters["departments"]);
+		}		
 	},
 	watch: {
-		department: function(newVal) {
+		user: function(newVal) {
 			this.nombre = newVal.nombre;
 			this.apellidos = newVal.apellidos;
 			this.email = newVal.email;

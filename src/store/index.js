@@ -14,13 +14,11 @@ const state = {
   users: {},
   authUser: undefined,
 };
-
 const getters = {
   departments: (state) => state.departments,
   users: (state) => state.users,
   authUser: (state) => state.authUser,
 };
-
 // actions
 const actions = {
   load: function({ commit }) {
@@ -53,21 +51,44 @@ const actions = {
   deleteDepartment: function(_, id) {
     return fDepartment.doc(id).delete();
   },
-  createUser: function(_, payload) {
+  createUser: function(context, payload) {
     return sha256(payload.password).then((e) => {
       payload.password = e;
-      return fUsers.add(payload);
+      return fUsers.add(payload).then(x => {
+        if (payload.departamento) context.dispatch("addUserDepartment", {idUser:x.id, idDepartment:payload.departamento})
+      });
     });
   },
-  updateUser: function(_, { id, payload }) {
+  updateUser: function(context, { id, payload }) {
     return sha256(payload.password).then((e) => {
       payload.password = e;
+      var usr = context.state.users[id];
+      if (usr && usr.departamento != payload.departamento){
+        context.dispatch("removeUserDepartment", {idUser:id, idDepartment:usr.departamento});
+        context.dispatch("addUserDepartment", {idUser:id, idDepartment:payload.departamento});        
+      } 
       return fUsers.doc(id).set(payload);
     });
   },
   deleteUser: function(_, id) {
     return fUsers.doc(id).delete();
   },
+  addUserDepartment: function( context, {idUser, idDepartment}) {
+    var dep = context.state.departments[idDepartment];
+    if (dep){
+      if (!dep.users) dep.users = {};
+      dep.users[idUser] = idUser;
+      context.dispatch("updateDepartment", {id:idDepartment, payload:dep})
+    }
+  },
+  removeUserDepartment: function( context, {idUser, idDepartment}) {
+    var dep = context.state.departments[idDepartment];
+    if (dep){
+      if (!dep.users) dep.users = {};
+      delete dep.users[idUser]
+      context.dispatch("updateDepartment", {id:idDepartment, payload:dep})
+    }
+  },  
 
   login({ commit }, { email, password }) {
     console.log("commit: ", commit);

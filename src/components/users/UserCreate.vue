@@ -14,13 +14,18 @@
                             <v-text-field v-model="password" prepend-icon="mdi-form-textbox-password" label="Contraseña" type="password"></v-text-field>
                             <v-text-field v-model="vencimiento" prepend-icon="mdi-calendar-range" label="Fecha vencimiento" type="date"></v-text-field>
                             <v-select
-                            :items="items"
+                            v-model="departamento"
+                            :items="departments"
                             label="departamento"
+                            item-text="nombre"
+                            item-value="id"
                             prepend-icon="mdi-family-tree"                            
-                            ></v-select>
+                            >
+
+                            </v-select>
                             <v-switch
                             v-model="estado"
-                            :label="`Departamento activo: ${estado.toString()}`"
+                            :label="`Usuario activo: ${estado.toString()}`"
                             ></v-switch>
                             <v-btn :disabled="!valid" color="primary" class="mr-4" @click="submit">
                                 submit
@@ -38,9 +43,7 @@
 
 <script>
 
-export default {
-
-    
+export default {    
     data: () => ({
 		nombre: "",
 		apellidos: "",
@@ -49,11 +52,14 @@ export default {
         vencimiento: "",
         departamento: "",        
 		estado: true,
-        valid: true,
-        items:[]
-        
-	}),
-	methods: {
+        valid: true,       
+    }),
+    computed: {
+		departments: function() {
+			return Object.values(this.$store.getters["departments"]);
+		}
+    },
+    methods: {
 		submit() {
             var user = {
                 nombre: this.nombre,
@@ -64,7 +70,6 @@ export default {
                 departamento: this.departamento,       
                 estado: this.estado,
             }
-
             this.$store.dispatch('createUser', user)
             .then(() => this.$router.push("/users"))
             .catch(e => {
