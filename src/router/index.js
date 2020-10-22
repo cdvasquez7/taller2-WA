@@ -65,6 +65,12 @@ const routes = [
         component: DepartmentUpdate,
         //meta: { requiresAuth: true }
     },
+    {
+        path: '/login',
+        name: 'login',
+        //component: DepartmentUpdate,
+        meta: { requiresAuth: false }
+    },
   ]
 
   const router = new VueRouter({
