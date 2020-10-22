@@ -1,44 +1,33 @@
 <template>
 	<div class="main">
-		<h1 class="mt-2 mb-2">Actualizar departamento</h1>
+		<h1 class="mt-2 mb-2">Actualizar usuario</h1>
 
 		<v-card class="mt-4 pa-5">
 			<v-form v-model="valid">
 				<v-container>
 					<v-row>
-						<v-col cols="12" sm="6" md="6">
-							<v-text-field
-								v-model="nombre"
-								prepend-icon="mdi-label"
-								label="Nombre"
-							></v-text-field>
-							<v-text-field
-								v-model="coordinador"
-								prepend-icon="mdi-account-tie"
-								label="Coordinador"
-							></v-text-field>
-							<v-text-field
-								v-model="numeroUsuarios"
-								prepend-icon="mdi-account-group"
-								type="number"
-								label="Número de usuarios"
-							></v-text-field>
-							<v-text-field
-								v-model="direccion"
-								prepend-icon="mdi-map-marker"
-								label="Dirección"
-							></v-text-field>
-							<v-checkbox
-								v-model="estado"
-								:label="`Departamento activo: ${estado.toString()}`"
-							></v-checkbox>
-							<v-btn :disabled="!valid" color="primary" class="mr-4" @click="submit">
-								submit
-							</v-btn>
-							<!-- <v-btn @click="clear">
+                        <v-col cols="12" sm="6" md="6">
+                            <v-text-field v-model="nombre" prepend-icon="mdi-label" label="Nombres"></v-text-field>
+                            <v-text-field v-model="apellidos" prepend-icon="mdi-label" label="Apellidos"></v-text-field>
+                            <v-text-field v-model="email" prepend-icon="mdi-email" label="Correo" type="email"></v-text-field>
+                            <v-text-field v-model="password" prepend-icon="mdi-form-textbox-password" label="Contraseña" type="password"></v-text-field>
+                            <v-text-field v-model="vencimiento" prepend-icon="mdi-calendar-range" label="Fecha vencimiento" type="date"></v-text-field>
+                            <v-select
+                            :items="items"
+                            label="departamento"
+                            prepend-icon="mdi-family-tree"                            
+                            ></v-select>
+                            <v-switch
+                            v-model="estado"
+                            :label="`Departamento activo: ${estado.toString()}`"
+                            ></v-switch>
+                            <v-btn :disabled="!valid" color="primary" class="mr-4" @click="submit">
+                                submit
+                            </v-btn>
+                            <!-- <v-btn @click="clear">
                                 clear
                             </v-btn> -->
-						</v-col>
+                        </v-col>
 					</v-row>
 				</v-container>
 			</v-form>
@@ -53,42 +42,49 @@ export default {
 	},
 	data: () => ({
 		nombre: "",
-		coordinador: "",
-		numeroUsuarios: "",
-		direccion: "",
+		apellidos: "",
+		email: "",
+        password: "",
+        vencimiento: "",
+        departamento: "",        
 		estado: true,
-		valid: true,
+        valid: true,
+        items:[],
 		id: ""
 	}),
 	computed: {
 		department: function() {
-			return this.$store.getters["departments"].find(e => e.id === this.id);
+			return this.$store.getters["users"][this.id];
 		}
 	},
 	watch: {
 		department: function(newVal) {
 			this.nombre = newVal.nombre;
-			this.coordinador = newVal.coordinador;
-			this.numeroUsuarios = newVal.numeroUsuarios;
-			this.direccion = newVal.direccion;
+			this.apellidos = newVal.apellidos;
+			this.email = newVal.email;
+			this.password = newVal.password;
+			this.vencimiento = newVal.vencimiento;
+			this.departamento = newVal.departamento;    
 			this.estado = newVal.estado;
 		}
 	},
 	methods: {
 		submit() {
-			var department = {
-				nombre: this.nombre,
-				coordinador: this.coordinador,
-				numeroUsuarios: this.numeroUsuarios,
-				direccion: this.direccion,
-				estado: this.estado
+			var user = {
+                nombre: this.nombre,
+                apellidos: this.apellidos,
+                email: this.email,
+                password: this.password,
+                vencimiento: this.vencimiento,
+                departamento: this.departamento,       
+                estado: this.estado,
 			};
 
 			this.$store
-				.dispatch("updateDepartment", {id:this.id, payload:department})
-				.then(() => this.$router.push("/departments"))
+				.dispatch("updateUser", {id:this.id, payload:user})
+				.then(() => this.$router.push("/users"))
 				.catch(e => {
-					alert("Error al actualizar el departamento");
+					alert("Error al actualizar el usuario");
 					console.log(e);
 				});
 		}

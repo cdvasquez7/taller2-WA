@@ -22,8 +22,6 @@
                             v-model="estado"
                             :label="`Departamento activo: ${estado.toString()}`"
                             ></v-switch>
-
-
                             <v-btn :disabled="!valid" color="primary" class="mr-4" @click="submit">
                                 submit
                             </v-btn>
@@ -66,7 +64,7 @@ export default {
                 departamento: this.departamento,       
                 estado: this.estado,
             }
-            
+
             this.$store.dispatch('createUser', user)
             .then(() => this.$router.push("/users"))
             .catch(e => {
