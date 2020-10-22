@@ -89,9 +89,11 @@ const actions = {
       context.dispatch("updateDepartment", {id:idDepartment, payload:dep})
     }
   },  
-
   login({ commit }, { email, password }) {
     console.log("commit: ", commit);
+
+    if(email == undefined && password == undefined) return commit("SET_AUTH_USER_DATA", undefined);
+
     return sha256(password).then((pass) => {
       return fUsers
         .where("email", "==", email)

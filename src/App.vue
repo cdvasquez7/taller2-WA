@@ -25,10 +25,13 @@
         />
       </div> -->
 
-    <v-btn dark text :to="{name:'departments'}" >Departamentos </v-btn>
-    <v-btn dark text :to="{name:'users'}" >Usuarios </v-btn>
+    <v-btn  v-if="authUser"  dark text :to="{name:'departments'}" >Departamentos </v-btn>
+    <v-btn  v-if="authUser"  dark text :to="{name:'users'}" >Usuarios </v-btn>
+
     <v-spacer></v-spacer>
-    <v-btn v-if="!authUser" dark text :to="{name:'login'}" >Usuarios </v-btn>
+        <v-btn v-if="!authUser" dark text :to="{name:'userCreate'}" > Registrarse </v-btn>
+    <v-btn v-if="!authUser" dark text :to="{name:'login'}" > Iniciar </v-btn>
+
     <v-toolbar-title v-else v-text="authUser.nombre"></v-toolbar-title>
     <v-menu
         left
@@ -71,10 +74,11 @@ export default {
   },
   methods:{
     logout(){
-      this.$store.dispatch('load', undefined)  
+      this.$store.dispatch('logout', undefined)  
     }
   },
   created() {
+    this.$store.dispatch('login', {email:undefined,password:undefined})
     this.$store.dispatch('load', undefined)
   }
 };

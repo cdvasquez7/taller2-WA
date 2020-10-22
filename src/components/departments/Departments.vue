@@ -89,7 +89,7 @@ export default {
 				{ text: "Coordinador", value: "coordinador" },
 				{ text: "Número de usuarios", value: "numeroUsuarios" },
 				{ text: "Dirección", value: "direccion" },
-				{ text: "Estado", value: "estado" },
+				{ text: "Estado", value: "nestado" },
 				{ text: "Acciones", value: "acciones" , align: 'center',}
             ],
             stateDeleteDepartament: false,
@@ -118,7 +118,10 @@ export default {
     },
 	computed: {
 		departments() {
-			return Object.values(this.$store.getters["departments"]);
+			return Object.values(this.$store.getters["departments"]).map(dep => {
+        dep.nestado = dep.estado?"Activo":"Inactivo";
+        return dep;
+      });
 		}
 	}
 };

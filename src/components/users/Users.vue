@@ -108,7 +108,7 @@ export default {
             .dispatch("deleteUser", this.objectUser.id)
             .then(() => this.cancelDeleteUser())
             .catch(e => {
-                alert("Error al actualizar el Usuario");
+                alert("Usuario Creado");
             console.log(e);
             });
 
